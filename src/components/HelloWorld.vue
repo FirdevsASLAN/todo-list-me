@@ -12,14 +12,26 @@
               color="red"
               hide-details
             ></v-checkbox>
+            <v-text-field
+              v-if="todoItem.isEdit"
+              solo
+              v-model="todoItem.todo"
+            ></v-text-field>
             <label
+              v-else
               :class="{ 'text-decoration-line-through': todoItem.isCompleted }"
               >{{ todoItem.todo }}</label
             >
-            <v-icon class="pointer" v-if="todoItem.isEdit"
-              >mdi-content-save-outline</v-icon
+            <v-icon
+              class="pointer"
+              v-if="todoItem.isEdit"
+              @click="editTodo(todoItem.id)"
             >
-            <v-icon class="pointer" v-else> mdi-pencil-outline</v-icon>
+              mdi-content-save-outline
+            </v-icon>
+            <v-icon class="pointer" v-else @click="editTodo(todoItem.id)">
+              mdi-pencil-outline
+            </v-icon>
             <v-icon class="pointer" @click="deleteTodo(todoItem.id)">
               mdi-delete
             </v-icon>
@@ -47,6 +59,14 @@ export default {
     },
     deleteTodo(id) {
       this.todoList = this.todoList.filter((todoItem) => todoItem.id !== id);
+    },
+    editTodo(id) {
+      console.log("edit");
+      this.todoList = this.todoList.map((todoItem) =>
+        todoItem.id === id
+          ? { ...todoItem, isEdit: !todoItem.isEdit }
+          : todoItem
+      );
     },
   },
   data() {
