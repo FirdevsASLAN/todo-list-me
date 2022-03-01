@@ -6,14 +6,16 @@
         <v-text-field label="new todo" solo v-model="newTodo"></v-text-field>
         <v-btn elevation="2" @click="addTodo">Add Todo</v-btn>
         <div v-if="todoList.length > 0">
-          <div v-for="todoItem in todoList" :key="todoItem">
+          <div v-for="todoItem in todoList" :key="todoItem.id">
             <v-checkbox
-              v-model="ex4"
+              v-model="todoItem.isCompleted"
               color="red"
-              value="red"
               hide-details
             ></v-checkbox>
-            <span>{{ todoItem }}</span>
+            <label
+              :class="{ 'text-decoration-line-through': todoItem.isCompleted }"
+              >{{ todoItem.todo }}</label
+            >
             <v-icon> mdi-delete</v-icon>
             <v-icon>mdi-content-save-outline</v-icon>
             <v-icon> mdi-pencil-outline</v-icon>
@@ -25,12 +27,18 @@
 </template>
 
 <script>
+import { v4 as uuidv4 } from "uuid";
 export default {
   name: "HelloWorld",
   methods: {
     addTodo() {
-      this.todoList.push(this.newTodo);
-      console.log(this.newTodo);
+      this.todoList.push({
+        id: uuidv4(),
+        isCompleted: false,
+        isEdit: false,
+        todo: this.newTodo,
+      });
+      console.log(this.todoList);
       this.newTodo = "";
     },
   },
