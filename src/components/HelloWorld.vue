@@ -16,9 +16,13 @@
               :class="{ 'text-decoration-line-through': todoItem.isCompleted }"
               >{{ todoItem.todo }}</label
             >
-            <v-icon> mdi-delete</v-icon>
-            <v-icon>mdi-content-save-outline</v-icon>
-            <v-icon> mdi-pencil-outline</v-icon>
+            <v-icon class="pointer" v-if="todoItem.isEdit"
+              >mdi-content-save-outline</v-icon
+            >
+            <v-icon class="pointer" v-else> mdi-pencil-outline</v-icon>
+            <v-icon class="pointer" @click="deleteTodo(todoItem.id)">
+              mdi-delete
+            </v-icon>
           </div>
         </div>
       </v-col>
@@ -41,6 +45,9 @@ export default {
       console.log(this.todoList);
       this.newTodo = "";
     },
+    deleteTodo(id) {
+      this.todoList = this.todoList.filter((todoItem) => todoItem.id !== id);
+    },
   },
   data() {
     return {
@@ -55,5 +62,8 @@ export default {
   &__title {
     margin-top: 5rem;
   }
+}
+.pointer {
+  cursor: pointer;
 }
 </style>
